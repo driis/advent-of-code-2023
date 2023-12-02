@@ -22,6 +22,7 @@ int DigitsFromLine(string line)
     return Convert.ToInt32($"{digits.First().Item2}{digits.Last().Item2}");
 
 }
+
 var input = File.ReadAllLines(args.FirstOrDefault() ?? "input.txt");
 var coords = input.Select(DigitsFromLine);
 var answer = coords.Sum();
