@@ -8,22 +8,17 @@
 
 int DigitsFromLine(string line)
 {
-    var digits = new List<(string,int)>();
-    int offset = 0;
+    var digits = "";
     while(line.Length > 0)
     {
         var token = PickTokenFromStart(line);
-        if (token != null)
-            digits.Add(token.Value);
+        digits += token?.Item2.ToString() ?? "";
         line = line[1..];
-        offset++;
     }
     
-    return Convert.ToInt32($"{digits.First().Item2}{digits.Last().Item2}");
-
+    return Convert.ToInt32($"{digits[0]}{digits[^1]}");
 }
 
 var input = File.ReadAllLines(args.FirstOrDefault() ?? "input.txt");
-var coords = input.Select(DigitsFromLine);
-var answer = coords.Sum();
+var answer = input.Select(DigitsFromLine).Sum();
 Console.WriteLine(answer);
