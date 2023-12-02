@@ -19,8 +19,6 @@ public static class Extensions
     }
 }
 
-
-// Evil ? 
 public static class Console
 {
     public static void Dump<T>(IEnumerable<T> what) 
