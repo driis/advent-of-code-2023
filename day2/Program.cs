@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-var input = File.ReadAllLines(args.FirstOrDefault() ?? "input.txt");
+﻿var input = File.ReadAllLines(args.FirstOrDefault() ?? "input.txt");
 var games = input.Select(Game.Parse).ToArray();
 var bag = new CubeSet(12,13,14);
 
