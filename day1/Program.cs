@@ -16,12 +16,15 @@ int[] SelectDigitsFromLine(string line)
 
     return digits.OrderBy(d => d.Offset).Select(d => d.Tuple.Item2).ToArray();
 }
-var input = File.ReadAllLines("input.txt");
+var input = File.ReadAllLines(args.FirstOrDefault() ?? "input.txt");
 var coords = input.Select(line =>
 {
     var digits = SelectDigitsFromLine(line);
-    return Convert.ToInt32($"{digits.First()}{digits.Last()}");
-});
+    string it = $"{digits.First()}{digits.Last()}";
+    Console.WriteLine($"{line}\t{it}");
+    return Convert.ToInt32(it);
+}).ToArray();
+
 var answer = coords.Sum();
 Console.WriteLine(answer);
 
