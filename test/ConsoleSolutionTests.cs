@@ -7,7 +7,13 @@ public class Tests
     [TestCaseSource(nameof(EnumerateDays))]
     public async Task RunSolutions(string path)
     {
-        Console.WriteLine($"Running solution in {path}");
+        var msg = $"Running solution in {path}";
+        var banner = new System.String(Enumerable.Repeat('-', msg.Length).ToArray());
+        Console.WriteLine();
+        Console.WriteLine(banner);
+        Console.WriteLine(msg);
+        Console.WriteLine(banner);
+        Console.WriteLine();
         
         var p = Process.Start(new ProcessStartInfo("dotnet", "run --no-build")
         {
@@ -15,6 +21,7 @@ public class Tests
             RedirectStandardError = true,
             WorkingDirectory = path
         });
+        Debug.Assert(p != null);
         await p.WaitForExitAsync();
         Console.WriteLine(await p.StandardOutput.ReadToEndAsync());
         var errorsOut = await p.StandardError.ReadToEndAsync();
