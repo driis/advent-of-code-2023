@@ -7,9 +7,9 @@ WriteLine("Part 1:");
 WriteLine(answer);
 
 WriteLine("Part 2:");
-Dictionary<int, List<Card>> lookup = cards.ToDictionary(x => x.Id, x => new List<Card> {x});
+var lookup = cards.ToDictionary(x => x.Id);
 
-void CopyWinners(Card c)
+void CountWinners(Card c)
 {
     int win = c.WinningCount;
     for (int i = 1; i <= win; i++)
@@ -17,18 +17,18 @@ void CopyWinners(Card c)
         int id = c.Id + i;
         if (id > cards.Length)
             break;
-        lookup[id].Add(lookup[id].First());
+        lookup[id].CopiesWon++;
     }
 }
 
 for (int i = 1; i <= cards.Length; i++)
 {
-    var process = lookup[i].ToArray();
-    foreach (Card c in process)
-        CopyWinners(c);
+    var process = lookup[i];
+    for(int n = 0 ; n < process.CopiesWon ; n++)
+        CountWinners(process);
 }
 
-int answerTwo = lookup.Values.Sum(x => x.Count);
+int answerTwo = lookup.Values.Sum(x => x.CopiesWon);
 WriteLine(answerTwo);
 
 record Card(int Id, int[] Winning, int[] Numbers)
@@ -51,5 +51,6 @@ record Card(int Id, int[] Winning, int[] Numbers)
 
     public int Points => WinningCount == 0 ? 0 : (int)Math.Pow(2, WinningCount-1);
 
-    
+    public int CopiesWon { get; set; } = 1;
+
 };
