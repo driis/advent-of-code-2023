@@ -1,3 +1,8 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=5F512720_002D8B36_002D4BB8_002DB4BF_002D391CECCB85CC_002Ff_003AProgram_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
-	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=6818031B_002D3B69_002D4A81_002D99B8_002D0BA6DEF82FB7_002Ff_003AProgram_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String></wpf:ResourceDictionary>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=6818031B_002D3B69_002D4A81_002D99B8_002D0BA6DEF82FB7_002Ff_003AProgram_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8a9cf941_002D4224_002D4b6f_002D82ef_002D51214e90b290/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;
+  &lt;TestAncestor&gt;
+    &lt;TestId&gt;NUnit3x::DCB4C527-073F-4612-B52C-784069D67C7E::net8.0::test.Tests.RunSolutions&lt;/TestId&gt;
+  &lt;/TestAncestor&gt;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
