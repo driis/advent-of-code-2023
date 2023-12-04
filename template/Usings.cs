@@ -17,15 +17,12 @@ public static class Extensions
             n : 
             null;
     }
-}
 
-
-// Evil ? 
-public static class Console
-{
-    public static void Dump<T>(IEnumerable<T> what) 
+    public static void DumpConsole<T>(IEnumerable<T> items)
     {
-        foreach(T item in what)
+        foreach (var item in items)
+        {
             WriteLine(item);
+        }
     }
 }
