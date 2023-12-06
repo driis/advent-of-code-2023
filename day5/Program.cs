@@ -25,13 +25,14 @@ IEnumerable<LongRange> RangesFromLine(string line)
 long LowestLocation(Map[] chain, LongRange range)
 {
     long lowest = long.MaxValue;
-    foreach (long value in range.Values())
+    WriteLine($"Process range {range}");
+    var values = range.Values().ToArray();
+    Parallel.ForEach(values, v =>
     {
-        var loc = MapThroughAll(chain, value);
+        var loc = MapThroughAll(chain, v);
         if (loc < lowest)
             lowest = loc;
-    }
-
+    });
     return lowest;
 }
 
