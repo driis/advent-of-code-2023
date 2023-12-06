@@ -11,14 +11,20 @@ public static class Extensions
             throw new ApplicationException($"{value} could not be parsed as an integer");
     }
 
-        public static int? ToIntNullable(this string value)
+    public static long ToLong(this string value)
+    {
+        return long.TryParse(value, out long n) ? 
+            n : 
+            throw new ApplicationException($"{value} could not be parsed as a long");
+    }
+    public static int? ToIntNullable(this string value)
     {
         return int.TryParse(value, out int n) ? 
             n : 
             null;
     }
 
-    public static void DumpConsole<T>(IEnumerable<T> items)
+    public static void DumpConsole<T>(this IEnumerable<T> items)
     {
         foreach (var item in items)
         {
