@@ -17,14 +17,14 @@ public static class Extensions
             n : 
             null;
     }
-        
+
     public static long ToLong(this string value)
     {
         return long.TryParse(value, out long n) ? 
             n : 
             throw new ApplicationException($"{value} could not be parsed as a long");
     }
-
+    
     public static void DumpConsole<T>(this IEnumerable<T> items)
     {
         foreach (var item in items)
