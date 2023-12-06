@@ -58,13 +58,13 @@ var locations = seeds.Select(s => new {Seed = s, Location = MapThroughAll(maps, 
     .ToArray();
 WriteLine("Part 1"); 
 WriteLine($"Answer: {locations.First().Location}");
-
+/*
 WriteLine("\nPart 2");
 var ranges = RangesFromLine(input[0]).ToArray();
 var rangeLocations = ranges.Select(r => new {Range = r, Location = LowestLocation(maps, r)})
     .OrderBy(x => x.Location).ToArray();
-ranges.DumpConsole();
 WriteLine($"Answer: {rangeLocations.First().Location}");
+*/
 record MapLine(long Destination, long Source, long Length)
 {
     public long End => Source + Length;
