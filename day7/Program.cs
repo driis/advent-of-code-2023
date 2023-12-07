@@ -1,14 +1,18 @@
-﻿using System.Diagnostics;
+﻿// Normally we will start by reading lines from an input file
 
+using System.Numerics;
 
-// Normally we will start by reading lines from an input file
 var input = File.ReadAllLines(args.FirstOrDefault() ?? "input.txt");
 var hands = input.Select(Hand.Parse);
 
-var handsOrdered = hands.Order().Select((h, i) => new {Hand = h, Rank = i + 1, Winnings = (i+1) * h.Bid}).ToArray();
+var handsOrdered = hands
+    .Select(x => new ComplexHand(x.BestWithJoker(), x))
+    .Order()
+    .Select((h, i) => new {Hand = h, Rank = i + 1, Winnings = (i+1) * h.Original.Bid}).ToArray();
+
 handsOrdered.DumpConsole();
 int answer = handsOrdered.Sum(h => h.Winnings);
-WriteLine($"Part 1:\nAnswer: {answer}");
+WriteLine($"Part 2:\nAnswer: {answer}");
 
 record Hand(string Cards, int Bid) : IComparable<Hand>
 {
@@ -20,17 +24,31 @@ record Hand(string Cards, int Bid) : IComparable<Hand>
 
     public IEnumerable<IGrouping<char, char>> CardsOfKind => Cards.GroupBy(_ => _);
     public int HighestCountOfKind => CardsOfKind.Max(x => x.Count());
-    
+
+    public bool HasJoker => Cards.Any(ch => ch == 'J');
+    public Hand BestWithJoker()
+    {
+        if (!HasJoker)
+            return this;
+        int jokerIndex = Cards.IndexOf('J');
+        var jokerChars = _cardsOfValue[..^2];
+        var handsToConsider = jokerChars.Select(ch => new Hand(new String(Cards.ReplaceAt(jokerIndex, ch)), Bid))
+            .Select(h => h.BestWithJoker());
+        
+        return handsToConsider.OrderDescending().First();
+    }
     public int CompareTo(Hand? other)
     {
-        Debug.Assert(!ReferenceEquals(null, other));
-        var typeThis = HandType.WinningOrder.First(x => x.Predicate(this));
-        var typeOther = HandType.WinningOrder.First(x => x.Predicate(other));
-        int handsCompared = typeThis.Value - typeOther.Value;
+        var handsCompared = CompareToHandOnly(other);
         if (handsCompared != 0)
             return handsCompared;
         
         // Same hand
+        return CompareToCardsOnly(other);
+    }
+
+    public int CompareToCardsOnly(Hand? other)
+    {
         for (int i = 0; i < Cards.Length; i++)
         {
             if (this.Cards[i] != other.Cards[i])
@@ -39,16 +57,46 @@ record Hand(string Cards, int Bid) : IComparable<Hand>
                 var indexOther = _cardsOfValue.IndexOf(other.Cards[i]);
                 int cardsCompared = indexOther - indexThis;
                 if (cardsCompared != 0)
+                {
                     return cardsCompared;
+                }
             }
         }
-
+        
         return 0;
     }
 
-    private readonly List<char> _cardsOfValue = new() {'A', 'K', 'Q', 'J', 'T', '9', '8', '7', '6', '5', '4', '3', '2'};
+    public int CompareToHandOnly(Hand? other)
+    {
+        Debug.Assert(!ReferenceEquals(null, other));
+        var typeThis = HandType.WinningOrder.First(x => x.Predicate(this));
+        var typeOther = HandType.WinningOrder.First(x => x.Predicate(other));
+        int handsCompared = typeThis.Value - typeOther.Value;
+        return handsCompared;
+    }
+
+    private readonly List<char> _cardsOfValue = new() {'A', 'K', 'Q', 'T', '9', '8', '7', '6', '5', '4', '3', '2','J'};
 }
 
+record ComplexHand(Hand Best, Hand Original) : IComparable<ComplexHand>
+{
+    public int CompareTo(ComplexHand? other)
+    {
+        Debug.Assert(!ReferenceEquals(other,null));
+        int n = Best.CompareToHandOnly(other.Best);
+        if (n == 0)
+        {
+            n = Original.CompareToCardsOnly(other.Original);
+        }
+
+        return n;
+    }
+
+    public override string ToString()
+    {
+        return new {Best = Best.Cards, Original = Original.Cards, Original.Bid}.ToString() ?? throw new InvalidOperationException();
+    }
+}
 record HandType(Func<Hand, bool> Predicate, int Value)
 {
     public static HandType FiveOfAKind => new HandType(hand => hand.HighestCountOfKind == 5, 10);

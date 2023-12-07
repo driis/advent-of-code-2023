@@ -1,7 +1,8 @@
 global using static System.Console;
 global using System.Text.RegularExpressions;
+global using System;
 global using System.IO;
-
+global using System.Diagnostics;
 public static class Extensions
 {
     public static int ToInt(this string value)
@@ -31,5 +32,12 @@ public static class Extensions
         {
             WriteLine(item);
         }
+    }
+
+    public static T[] ReplaceAt<T>(this IEnumerable<T> source, int index, T replacement)
+    {
+        var a = source.ToArray();
+        a[index] = replacement;
+        return a;
     }
 }
