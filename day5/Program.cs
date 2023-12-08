@@ -53,12 +53,13 @@ var maps = new[]
 };
 
 /* Part 1 */ 
+/*
+
 var locations = seeds.Select(s => new {Seed = s, Location = MapThroughAll(maps, s)})
     .OrderBy(x => x.Location)
     .ToArray();
 WriteLine("Part 1"); 
 WriteLine($"Answer: {locations.First().Location}");
-/*
 WriteLine("\nPart 2");
 var ranges = RangesFromLine(input[0]).ToArray();
 var rangeLocations = ranges.Select(r => new {Range = r, Location = LowestLocation(maps, r)})
