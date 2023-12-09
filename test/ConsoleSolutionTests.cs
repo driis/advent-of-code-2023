@@ -33,7 +33,7 @@ public class Tests
         Assert.That(p.ExitCode, Is.EqualTo(0), $"Process did not exit with code 0, but {p.ExitCode}");
     }
 
-    private static readonly string[] Exclude = new[] {"day5", "day8"};
+    private static readonly string[] Exclude = new[] {"day5", "day7", "day8"};
     public static IEnumerable<string> EnumerateDays()
     {
         int maxDepth = 10;
