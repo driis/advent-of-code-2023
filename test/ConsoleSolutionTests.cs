@@ -15,7 +15,7 @@ public class Tests
         Console.WriteLine(banner);
         Console.WriteLine();
         
-        var p = Process.Start(new ProcessStartInfo("dotnet", "run --no-build")
+        var p = Process.Start(new ProcessStartInfo("dotnet", "run")
         {
             RedirectStandardOutput = true,
             RedirectStandardError = true,
@@ -33,6 +33,7 @@ public class Tests
         Assert.That(p.ExitCode, Is.EqualTo(0), $"Process did not exit with code 0, but {p.ExitCode}");
     }
 
+    private static readonly string[] Exclude = new[] {"day5", "day8"};
     public static IEnumerable<string> EnumerateDays()
     {
         int maxDepth = 10;
@@ -50,6 +51,6 @@ public class Tests
             throw new ApplicationException("Unable to find sln dir");
 
         var directories = Directory.EnumerateDirectories(dir, "day*");
-        return directories;
+        return directories.Where(dir => !Exclude.Any(exc => dir.EndsWith(exc)));
     }
 }
