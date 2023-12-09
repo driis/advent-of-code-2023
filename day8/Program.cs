@@ -1,36 +1,30 @@
 ﻿// Normally we will start by reading lines from an input file
 var input = File.ReadAllLines(args.FirstOrDefault() ?? "input.txt");
 var instructions = input[0];
-int cur = 0;
 var locations = input[2..].Select(Node.Parse).ToArray();
 var lookup = locations.ToDictionary(x => x.Code);
-var pos = "AAA";
+bool doPartOne = lookup.TryGetValue("AAA", out var pos);
 int count = 0;
-/*
-while (pos != "ZZZ")
+
+while (doPartOne && pos.Code != "ZZZ")
 {
-    var loc = lookup[pos];
-    pos = instructions[cur] == 'R' ? loc.Right : loc.Left; 
-    cur = ++cur % instructions.Length;
-    count++;
+    var instr = instructions[count++ % instructions.Length];
+    var next = instr == 'R' ? pos.Right : pos.Left;
+    pos = lookup[next];
 }
 WriteLine($"Part 1: Steps used {count}");
-*/
 // Part 2
 count = 0;
-cur = 0;
 var nodes = locations.Where(x => x.IsStartingNode).ToArray();
+WriteLine($"Part 2 starting with {nodes.Length} nodes: {String.Join(", ", nodes.Select(x=>x.Code))}.");
 while(!nodes.All(x => x.IsEndNode))
 {
-    var instr = instructions[cur];
-    // Move all the nodes 
-    nodes = nodes.Select(node => instr == 'R' ? lookup[node.Right] : lookup[node.Left]).ToArray();
-    cur = ++cur % instructions.Length;
-    count++;
-    Console.WriteLine(new String(nodes.Select(x => x.EndChar).ToArray()));
+    var instr = instructions[count++ % instructions.Length];
+    // Move all the nodes
+    var nextCodes = nodes.Select(node => instr == 'R' ? node.Right : node.Left).ToArray();
+    nodes = nextCodes.Select(n => lookup[n]).ToArray();
 }
 WriteLine($"Part 2: Steps used {count}");
-
 public record Node(string Code, string Left, string Right)
 {
     private static readonly Regex regParse = new Regex(@"(\w+) = \((\w+), (\w+)\)");
