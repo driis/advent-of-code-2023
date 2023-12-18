@@ -30,12 +30,12 @@ var allowedDirections = new Dictionary<char, Direction[]>{
 };
 
 Position previous = start;
-Direction? [] directions = [
+Direction? [] directions = {
     upConnectors.Contains(input[previous.Y-1][previous.X]) ? Direction.Up : null,
     downConnectors.Contains(input[previous.Y+1][previous.X]) ? Direction.Down : null,
     leftConnectors.Contains(input[previous.Y][previous.X-1]) ? Direction.Left : null,
     rightConnectors.Contains(input[previous.Y][previous.X+1]) ? Direction.Right : null
-];
+};
 Direction firstMove = (Direction)directions.First(x => x != null)!;
 Position current = Move(start, firstMove);
 WriteLine($"Begin at: {start}");
